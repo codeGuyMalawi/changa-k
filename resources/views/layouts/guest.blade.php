@@ -44,27 +44,51 @@
                 <img src="images/jeep.png" alt="Changa-K" />
                 <p class="logo-text"> Changa-K</p>
             </a>
+            @if (!Auth::guest())
+                <nav class="navbar" data-navbar>
+                    <ul class="navbar-list">
 
-            <nav class="navbar" data-navbar>
-                <ul class="navbar-list">
-
-                    <li>
-                        <a href="{{ url('/') }}" class="navbar-link active" data-nav-link>Home</a>
-                    </li>
-
-                    <li>
-                        <a href="#featured-car" class="navbar-link" data-nav-link>Explore cars</a>
-                    </li>
-
-                    <li>
-                        <a href="/" data-toggle="modal" data-target="#aboutUs" class="navbar-link"
-                            data-nav-link>About us</a>
-                    </li>
+                        <li>
+                            <a href="#" class="navbar-link active" data-nav-link>Home</a>
+                        </li>
 
 
+                        <li>
+                            <a href="#" class="navbar-link" data-nav-link>Bookings</a>
+                        </li>
 
-                </ul>
-            </nav>
+
+                        <li>
+                            <a href="/" data-toggle="modal" data-target="#aboutUs" class="navbar-link"
+                                data-nav-link>About us</a>
+                        </li>
+
+
+
+                    </ul>
+                </nav>
+            @else
+                <nav class="navbar" data-navbar>
+                    <ul class="navbar-list">
+
+                        <li>
+                            <a href="{{ url('/') }}" class="navbar-link active" data-nav-link>Home</a>
+                        </li>
+
+                        <li>
+                            <a href="#featured-car" class="navbar-link" data-nav-link>Explore cars</a>
+                        </li>
+
+                        <li>
+                            <a href="/" data-toggle="modal" data-target="#aboutUs" class="navbar-link"
+                                data-nav-link>About us</a>
+                        </li>
+
+
+
+                    </ul>
+                </nav>
+            @endif
 
             <div class="header-actions">
 
@@ -74,15 +98,36 @@
                     <span class="contact-time">Mon - Sat: 9:00 am - 6:00 pm</span>
                 </div>
 
-                <a href="#featured-car" class="btn" aria-labelledby="aria-label-txt">
-                    <ion-icon name="car-outline"></ion-icon>
+                @if (!Auth::guest())
+                    <a href="#featured-car" class="btn" aria-labelledby="aria-label-txt">
+                        <ion-icon name="car-outline"></ion-icon>
 
-                    <span id="aria-label-txt">Explore cars</span>
-                </a>
 
-                <a href="/dashboard" class="btn user-btn" aria-label="Profile">
-                    <ion-icon name="person-outline"></ion-icon>
-                </a>
+                        <span id="aria-label-txt">{{ auth()->user()->name }}</span>
+                    </a>
+                @else
+                    <a href="#featured-car" class="btn" aria-labelledby="aria-label-txt">
+                        <ion-icon name="car-outline"></ion-icon>
+
+                        <span id="aria-label-txt">Explore cars</span>
+                    </a>
+                @endif
+
+                @if (!Auth::guest())
+                    <a href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                     document.getElementById('logout-form').submit();"
+                        class="btn user-btn" aria-label="Profile">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                @else
+                    <a data-toggle="modal" data-target="#reservation" class="btn user-btn" aria-label="Profile">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </a>
+                @endif
 
                 <button class="nav-toggle-btn" data-nav-toggle-btn aria-label="Toggle Menu">
                     <span class="one"></span>
@@ -160,7 +205,8 @@
                     </li>
 
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#terms_conditions" class="footer-link">Terms
+                        <a href="#" data-toggle="modal" data-target="#terms_conditions"
+                            class="footer-link">Terms
                             & conditions</a>
                     </li>
 
@@ -172,7 +218,7 @@
                         <p class="footer-list-title">Branches in Malawi</p>
                     </li>
 
-              
+
                     <li>
                         <a href="#" class="footer-link">Blantyre , Chilimba</a>
                     </li>
@@ -407,16 +453,114 @@
     <!--
       - #Vehicle Reservation Form
     -->
-    <form action="{{ url('/reserve') }}" method="POST" role="form" enctype="multipart/form-data">
-        {{ csrf_field() }}
+
+    @if (!Auth::guest())
+        <form action="{{ url('/reserve') }}" method="POST" role="form" enctype="multipart/form-data">
+            {{ csrf_field() }}
+
+            <div style="color: black" class="modal  fade" id="reservation" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h5 style="font-weight:600" class="modal-title" id="reservation">Vehicle Reservation Form
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+
+
+                                    <div class="input-wrapper">
+                                        <label for="input-2" class="input-label">Fullname</label>
+
+                                        <input type="text" name="Hourly-pay" id="input-2"
+                                            class="modal-input-field" placeholder="Add fullname">
+                                    </div>
+
+                                    <div class="input-wrapper">
+                                        <label for="input-3" class="input-label">Phone no</label>
+
+                                        <input type="phone" name="year" id="input-3"
+                                            class="modal-input-field" placeholder="Add phone number">
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <label for="input-3" class="input-label">Pickup Date</label>
+
+                                        <input type="date" name="year" id="input-3"
+                                            class="modal-input-field" placeholder="Add pickup date">
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <label for="input-3" class="input-label">Return Date</label>
+
+                                        <input type="date" name="year" id="input-3"
+                                            class="modal-input-field" placeholder="Add derivery date">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-6">
+
+                                    <div class="input-wrapper">
+                                        <label for="input-3" class="input-label">Email</label>
+
+                                        <input type="email" name="year" id="input-3"
+                                            class="modal-input-field" placeholder="Add email">
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <label for="input-1" class="input-label">Car, model, or brand</label>
+
+
+                                        <input type="text" name="Hourly-pay" id="input-2"
+                                            class="modal-input-field" placeholder="Mazda Demio | 2500/Hour">
+
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <label for="input-3" class="input-label">Pickup Time</label>
+
+                                        <input type="time" name="year" id="input-3"
+                                            class="modal-input-field" placeholder="Add pickup time">
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <label for="input-3" class="input-label">Return Time</label>
+
+                                        <input type="time" name="year" id="input-3"
+                                            class="modal-input-field" placeholder="Add derivery time">
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    @else
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
 
         <div style="color: black" class="modal  fade" id="reservation" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
 
-                        <h5 style="font-weight:600" class="modal-title" id="reservation">Vehicle Reservation Form
+                        <h5 style="font-weight:600" class="modal-title" id="reservation">Login
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -424,84 +568,56 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="row">
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-12 col-form-label text-md-end">{{ __('Email') }}</label>
+                           
+                            <div class="col-md-12">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                            <div class="col-md-6">
-
-
-                                <div class="input-wrapper">
-                                    <label for="input-2" class="input-label">Fullname</label>
-
-                                    <input type="text" name="Hourly-pay" id="input-2" class="modal-input-field"
-                                        placeholder="Add fullname">
-                                </div>
-
-                                <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Phone no</label>
-
-                                    <input type="phone" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add phone number">
-                                </div>
-                                <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Pickup Date</label>
-
-                                    <input type="date" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add pickup date">
-                                </div>
-                                <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Return Date</label>
-
-                                    <input type="date" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add derivery date">
-                                </div>
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-
-
-
-                            <div class="col-md-6">
-
-                                <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Email</label>
-
-                                    <input type="email" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add email">
-                                </div>
-                                <div class="input-wrapper">
-                                    <label for="input-1" class="input-label">Car, model, or brand</label>
-
-
-                                    <input type="text" name="Hourly-pay" id="input-2" class="modal-input-field"
-                                        placeholder="Mazda Demio | 2500/Hour">
-
-                                </div>
-                                <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Pickup Time</label>
-
-                                    <input type="time" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add pickup time">
-                                </div>
-                                <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Return Time</label>
-
-                                    <input type="time" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add derivery time">
-                                </div>
-                            </div>
-
-
-
-
-
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
 
+                        <div class="row mb-3">
+                            <label for="password" class="col-md-12 col-form-label text-md-end">{{ __('Password') }}</label>
 
+                            <div class="col-md-12">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                      
+
+                        <div class="row mb-0">
+                            <div class="col-md-12  px-10">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Login') }}
+                                </button>
+
+                             
+                                    <a class="" href="{{ route('register') }}">
+                                        dont have an account yet? Register
+                                    </a>
+                            
+                            </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
-    </form>
+   
+        </form>
+    @endif
 
 
 

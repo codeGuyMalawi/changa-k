@@ -15,7 +15,7 @@
     <!--
     - custom css link
   -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url('css/style.css') }}">
 
     <link rel="stylesheet" href="{{ url('fontawesome/css/all.min.css') }}">
 
@@ -41,7 +41,7 @@
             <div class="overlay" data-overlay></div>
 
             <a href="#" class="logo">
-                <img src="images/jeep.png" alt="Changa-K" />
+                <img src="{{asset('images/jeep.png')}}" alt="Changa-K" />
                 <p class="logo-text"> Changa-K</p>
             </a>
 
@@ -57,7 +57,7 @@
                     </li>
 
                     <li>
-                        <a href="#featured-car" class="navbar-link" data-nav-link>Vehicles</a>
+                        <a href="{{ url('/car-management') }}" class="navbar-link" data-nav-link>Vehicles</a>
                     </li>
 
                     <li>
@@ -81,16 +81,21 @@
 
             
 
-                <a href="#featured-car" class="btn" aria-labelledby="aria-label-txt" style="background-color: #cecece !important;color:rgb(90, 90, 90) !important;">
+                <a href="#" class="btn" aria-labelledby="aria-label-txt" >
                     <ion-icon name="car-outline"></ion-icon>
 
-                    <span id="aria-label-txt">  Chimwemwe Chafukila</span>
+                    <span id="aria-label-txt"> {{ auth()->user()->name }}</span>
                 </a>
 
-                <a href="/" class="btn user-btn" aria-label="Profile">
+                <a href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                     document.getElementById('logout-form').submit();" class="btn user-btn" aria-label="Profile">
                     <ion-icon name="log-out-outline"></ion-icon>
                 </a>
 
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
                 <button class="nav-toggle-btn" data-nav-toggle-btn aria-label="Toggle Menu">
                     <span class="one"></span>
                     <span class="two"></span>
@@ -105,7 +110,15 @@
 
     <div class="content">
 
-
+        <div class="col-md-12  error" id="successMessage" style="color:white;background-color:green">
+              
+            @if(session()->has('message'))
+            <div class="alert alert-success">
+                {{ session()->get('message') }}
+            </div>
+        @endif
+         
+         </div>
 
         @yield('content')
 
@@ -243,187 +256,20 @@
         </div>
     </footer>
 
-    <!--
-      - #Terms & Conditions
-    -->
-
-    <form action="{{ url('/terms&conditions') }}" method="POST" role="form" enctype="multipart/form-data">
-        {{ csrf_field() }}
-
-        <div style="color: black" class="modal  fade" id="terms_conditions" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <h5 style="font-weight:600" class="modal-title" id="terms_conditions">Terms & Conditions
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <p><strong>Late Pick-ups </strong><strong>/ Early Drop-offs&nbsp;</strong><br>
-                            Your rental starts and finishes according to the pick-up and drop-off dates and times
-                            detailed on your voucher / eVoucher. Unfortunately, we are unable to provide refunds for
-                            unused time if a car is picked up late or dropped off early. If you are unable to pick the
-                            car up at the agreed time and date, it is essential you contact us as soon as possible. If
-                            you do not, there is no guarantee that the car will still be available – and you will not be
-                            entitled to any refund.<br>
-                            <br>
-                            <strong>One-Way Rentals</strong><br>
-                            One-way rentals must be confirmed in advance and may be subject to one-way fees, payable to
-                            the car hire company. We will advise you of the approximate costs after we receive your
-                            booking request and receive confirmation from the car hire company regarding the one-way
-                            rental.
-                        </p>
-                        <p><strong>Deliveries &amp; Collections&nbsp;</strong><br>
-                            Some car hire companies will agree to deliver your car to / collect it from a specified
-                            address. If so, there may be a fee for this service, payable to the car hire company. We
-                            will advise you whether a fee will apply when you confirm your pick-up / drop-off times,
-                            along with the full address details, in your booking request. Please note: car hire
-                            companies generally do not deliver to or collect from private accommodation.</p>
-                        <p><strong>Cancellations </strong></p>
-                        <p><strong>If you cancel:</strong></p>
-                        <ul>
-                            <li>MORE THAN 48 hours before your rental is due to start, you’ll receive a full refund (if
-                                you paid a booking deposit when you booked the car, you won’t get the deposit back).
-                            </li>
-                            <li>LESS THAN 48 hours before, or while you’re at the rental counter, we’ll refund what you
-                                paid <em>minus</em> the cost of 3 days of your rental - so there won’t be any refund if
-                                your car was booked for 3 days or less.</li>
-                            <li>AFTER your rental is due to start (or you just don’t turn up) you’ll receive no refund
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div class="modal-footer">
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
-    <!--
-      - #Privacy Policy
-    -->
-
-    <form action="{{ url('/privacy policy') }}" method="POST" role="form" enctype="multipart/form-data">
-        {{ csrf_field() }}
-
-        <div style="color: black" class="modal  fade" id="privacyPolicy" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <h5 style="font-weight:600" class="modal-title" id="privacyPolicy">Privacy Policy
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Last Updated: August 2, 2022</p>
-                        <p>Changa-k.com, (“we” or “us”) values you as our customer and recognizes that privacy is
-                            important to you. This Privacy Statement explains how we collect, use, and disclose data
-                            when you use our platform and associated services, and tells you how to contact us.</p>
-                        <ol class="uitk-type-list-300 all-y-margin-two">
-                            <li><b>What does this Privacy Statement cover?</b><br>This Privacy Statement is designed to
-                                describe:<br>
-                                <ul class="uitk-type-list-300 all-y-margin-two">
-                                    <li>How and what type of personal information we collect and use</li>
-                                    <li>When and with whom we share your personal information</li>
-                                    <li>What choices you can make about how we collect, use, and share your personal
-                                        information</li>
-                                </ul>
-                            </li>
-                            <br>
-                            <li><b>What personal information do we collect and use, and how do we collect it?</b><br>We
-                                collect personal information when:<br>
-                                <ul class="uitk-type-list-300 all-y-margin-two">
-                                    <li>You give us the information</li>
-                                    <li>We collect it automatically</li>
-                                    <li>We receive it from others</li>
-                                </ul>
-
-                            </li>
-
-                        </ol>
-
-                    </div>
-                    <div class="modal-footer">
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
-    <!--
-      - #About Us
-    -->
-
-    <form action="{{ url('/about') }}" method="POST" role="form" enctype="multipart/form-data">
-        {{ csrf_field() }}
-
-        <div style="color: black" class="modal  fade" id="aboutUs" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <h5 style="font-weight:600" class="modal-title" id="aboutUs">About Us
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <b>Who are we ?</b>
-                        <br>
-                        <p>
-                            Changa K was founded by Ian Changa in 2017. It has a fleet of 31 different kinds of vehicles
-                            that meet a wide range of customer needs. The vehicles are categorized into two based on
-                            capacity (size) i.e. big vehicles and small vehicles. Each category has its own fixed rate
-                            (price per day). Apart from mere customers, its vehicles are mostly hired by people from
-                            abroad during vacations and other tours. Currently, this car hire company has approximately
-                            26 employees.</p>
-                        <b>Where are we located ?</b>
-                        <br>
-                        <p>
-                            Changa K, a small car hire company that has just been newly introduced in business. This car
-                            hire company is situated in Chirimba, Blantyre.</p>
-
-
-
-                    </div>
-                    <div class="modal-footer">
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
 
     <!--
       - #Vehicle Reservation Form
     -->
-    <form action="{{ url('/reserve') }}" method="POST" role="form" enctype="multipart/form-data">
+    <form action="{{ url('/add-car') }}" method="POST" role="form" enctype="multipart/form-data">
         {{ csrf_field() }}
 
-        <div style="color: black" class="modal  fade" id="reservation" tabindex="-1" role="dialog"
+        <div style="color: black" class="modal  fade" id="add-car" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
 
-                        <h5 style="font-weight:600" class="modal-title" id="reservation">Vehicle Reservation Form
+                        <h5 style="font-weight:600" class="modal-title" id="add-car">Add Vehicle
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -437,29 +283,41 @@
 
 
                                 <div class="input-wrapper">
-                                    <label for="input-2" class="input-label">Fullname</label>
+                                    <label for="input-2" class="input-label">Name</label>
 
-                                    <input type="text" name="Hourly-pay" id="input-2" class="modal-input-field"
-                                        placeholder="Add fullname">
+                                    <input type="text" name="name" id="input-2" class="modal-input-field"
+                                        placeholder="add name">
                                 </div>
 
                                 <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Phone no</label>
+                                    <label for="input-3" class="input-label">Model</label>
 
-                                    <input type="phone" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add phone number">
+                                    <input type="text" name="model" id="input-3" class="modal-input-field"
+                                        placeholder="add model">
                                 </div>
                                 <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Pickup Date</label>
+                                    <label for="input-3" class="input-label">Capacity</label>
 
-                                    <input type="date" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add pickup date">
+                                    <input type="text" name="capacity" id="input-3" class="modal-input-field"
+                                        placeholder="add capacity">
                                 </div>
                                 <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Return Date</label>
+                                    <label for="input-3" class="input-label">Fuel Type</label>
 
-                                    <input type="date" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add derivery date">
+                                  
+                                    <select name="fuel" class="modal-input-field form-select-sm" aria-label=".form-select-sm example">
+                                        <option selected>Choose</option>
+                                        <option value="Petrol">Petrol</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="Hybrid">Hybrid</option>
+                                        
+                                      
+                                      </select>
+                                </div>
+                                <div class="input-wrapper">
+                                    <label for="input-3" class="input-label">Image</label>
+
+                                    <input type="file" name="file" id="input-3" class="modal-input-field">
                                 </div>
                             </div>
 
@@ -468,30 +326,39 @@
                             <div class="col-md-6">
 
                                 <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Email</label>
+                                    <label for="input-3" class="input-label">Quantity</label>
 
-                                    <input type="email" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add email">
+                                    <input type="text" name="quantity" id="input-3" class="modal-input-field"
+                                        placeholder="add quantity">
                                 </div>
                                 <div class="input-wrapper">
-                                    <label for="input-1" class="input-label">Car, model, or brand</label>
+                                    <label for="input-1" class="input-label">Transmission</label>
 
 
-                                    <input type="text" name="Hourly-pay" id="input-2" class="modal-input-field"
-                                        placeholder="Mazda Demio | 2500/Hour">
+                                  
+                                    <select name="transmission" class="modal-input-field form-select-sm" aria-label=".form-select-sm example">
+                                        <option selected>Choose</option>
+                                        <option value="Manual">Manual</option>
+                                        <option value="Automatic">Automatic</option>
+                                      
+                                      </select>
 
                                 </div>
                                 <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Pickup Time</label>
+                                    <label for="input-3" class="input-label">Amount</label>
 
-                                    <input type="time" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add pickup time">
+                                    <input type="text" name="amount" id="input-3" class="modal-input-field"
+                                        placeholder="add amount">
                                 </div>
                                 <div class="input-wrapper">
-                                    <label for="input-3" class="input-label">Return Time</label>
+                                    <label for="input-3" class="input-label">Status</label>
 
-                                    <input type="time" name="year" id="input-3" class="modal-input-field"
-                                        placeholder="Add derivery time">
+                                    <select name="status" class="modal-input-field form-select-sm" aria-label=".form-select-sm example">
+                                        <option selected>Choose</option>
+                                        <option value="1">Available</option>
+                                        <option value="0">Booked</option>
+                                      
+                                      </select>
                                 </div>
                             </div>
 
@@ -501,7 +368,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
 
 
                         </div>
@@ -512,11 +379,12 @@
 
 
 
-
+ 
+  
     <!--
         - custom js link
       -->
-    <script src="js/script.js"></script>
+    <script src="{{ url('js/script.js') }}"></script>
     <script src="{{ url('js/jquery.min.js') }}"></script>
     <script src="{{ url('js/popper.min.js') }}"></script>
     <script src="{{ url('js/bootstrap.min.js') }}"></script>
@@ -529,6 +397,11 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.ckeditor').ckeditor();
+        });
+    </script>
 </body>
 
 </html>

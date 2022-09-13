@@ -4,6 +4,27 @@
 
 
 /*-----------------------------------*\
+  #Admin
+\*-----------------------------------*/
+
+.add-button {
+    background-color: #FE673C;
+    padding: 5px;
+    width: 6%;
+    margin-bottom: 20px;
+    color: white;
+    border-radius: 7px;
+    box-shadow: 0 4px 2px -2px gray;
+    text-align: center;
+}
+
+.add-button:hover {
+    background-color: #cf5330;
+    color: white;
+}
+
+
+/*-----------------------------------*\
   #CUSTOM PROPERTY
 \*-----------------------------------*/
 
@@ -426,6 +447,7 @@ a {
     box-shadow: var(--shadow-1) !important;
     border-radius: var(--radius-18) !important;
     font-family: var(--ff-nunito) !important;
+    flex: none;
 }
 
 .input-wrapper {
