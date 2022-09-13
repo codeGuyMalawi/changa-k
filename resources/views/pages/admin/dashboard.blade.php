@@ -19,7 +19,14 @@
           
           <section class="section get-start">
             <div class="container">
+             
+            <div class="get-start-card  pb-5 px-5">
+              <div class="card-head">
+                <h5 class="pb-4 pt-4">Dashboard</h5>
 
+                
+
+            </div>
                <div class="row">
 
              
@@ -107,6 +114,7 @@
                  
                 </div>
 
+            </div>
             </div>
         </section>
 
